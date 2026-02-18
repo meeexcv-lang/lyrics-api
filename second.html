@@ -1,0 +1,142 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lyrics Display</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+
+      body {
+        background: linear-gradient(to right, #1e1e2f, #2b1f4a, #14102c);
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        overflow: hidden;
+      }
+
+      .background-blobs {
+        position: absolute;
+        width: 400px;
+        height: 400px;
+        background: linear-gradient(135deg, #ff4ecd 0%, #7b2ff7 100%);
+        filter: blur(90px);
+        border-radius: 50%;
+        z-index: -1;
+        animation: move 10s infinite alternate;
+      }
+
+      @keyframes move {
+        from {
+          transform: translate(-40%, -10%);
+        }
+        to {
+          transform: translate(30%, 25%);
+        }
+      }
+
+      .glass-card {
+        background: rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(18px);
+        border: 1px solid rgba(255, 255, 255, 0.15);
+        padding: 40px;
+        border-radius: 25px;
+        width: 450px;
+        text-align: center;
+        color: white;
+        box-shadow: 0 8px 32px rgba(255, 0, 200, 0.2);
+        max-height: 90vh;
+        overflow-y: auto;
+      }
+
+      h1 span {
+        color: #ff4ecd;
+      }
+
+      #song-title {
+        font-size: 1.3rem;
+        margin-bottom: 20px;
+        font-weight: 600;
+      }
+
+      #lyrics-content {
+        font-size: 0.95rem;
+        line-height: 1.6;
+        white-space: pre-wrap;
+        text-align: left;
+        overflow-y: auto;
+        max-height: 60vh;
+        padding-right: 10px;
+      }
+
+      #lyrics-content::-webkit-scrollbar {
+        width: 5px;
+      }
+
+      #lyrics-content::-webkit-scrollbar-thumb {
+        background: #ff4ecd;
+        border-radius: 10px;
+      }
+
+      a.back-link {
+        display: inline-block;
+        margin-top: 20px;
+        padding: 10px 20px;
+        border-radius: 12px;
+        border: 1px solid #ff4ecd;
+        color: #ff4ecd;
+        text-decoration: none;
+        font-weight: 600;
+        transition: 0.3s ease;
+      }
+
+      a.back-link:hover {
+        background: #ff4ecd;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 0 15px #ff4ecd;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="background-blobs"></div>
+
+    <div class="glass-card">
+      <header>
+        <div id="song-title">
+          <h1 class="song-name"></h1>
+        </div>
+      </header>
+
+      <div id="lyrics-content">
+        <p class="lyrics-text"></p>
+      </div>
+
+      <a href="index.html" class="back-link">← Back to Search</a>
+    </div>
+    <script>
+      let songTitle = document.querySelector(".song-name");
+      let lyricsContent = document.querySelector(".lyrics-text");
+      let artist = localStorage.getItem("artist");
+      let song = localStorage.getItem("song");
+      let lyrics = localStorage.getItem("lyrics-display");
+      console.log(artist);
+
+      function addLyrics() {
+        songTitle.textContent = song;
+        lyricsContent.textContent = lyrics;
+      }
+      addLyrics();
+    </script>
+  </body>
+</html>

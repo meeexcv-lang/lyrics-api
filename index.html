@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Premium Lyric Finder</title>
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background: linear-gradient(to right, #1e1e2f, #2b1f4a, #14102c);
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      overflow: hidden;
+    }
+
+    .background-blobs {
+      position: absolute;
+      width: 400px;
+      height: 400px;
+      background: linear-gradient(135deg, #ff4ecd 0%, #7b2ff7 100%);
+      filter: blur(90px);
+      border-radius: 50%;
+      z-index: -1;
+      animation: move 10s infinite alternate;
+    }
+
+    @keyframes move {
+      from {
+        transform: translate(-40%, -10%);
+      }
+      to {
+        transform: translate(30%, 25%);
+      }
+    }
+
+    .glass-card {
+      background: rgba(255, 255, 255, 0.08);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      padding: 40px;
+      border-radius: 25px;
+      width: 450px;
+      text-align: center;
+      color: white;
+      box-shadow: 0 8px 32px rgba(255, 0, 200, 0.2);
+      max-height: 90vh;
+      overflow-y: auto;
+    }
+
+    h1 span {
+      color: #ff4ecd;
+    }
+
+    .input-group input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 12px;
+      color: white;
+      outline: none;
+      transition: 0.3s ease;
+    }
+
+    input::placeholder {
+      color: rgba(255, 255, 255, 0.578);
+    }
+    .input-group input:focus {
+      border-color: #ff4ecd;
+      box-shadow: 0 0 10px #ff4ecd;
+    }
+
+    #searchBtn {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(90deg, #ff4ecd, #7b2ff7);
+      border: none;
+      border-radius: 12px;
+      color: white;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.3s ease;
+      margin-top: 10px;
+    }
+
+    #searchBtn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 15px #ff4ecd;
+    }
+
+    #lyrics-content {
+      margin-top: 20px;
+      font-size: 0.95rem;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      text-align: left;
+
+      overflow-y: auto;
+      padding-right: 10px;
+    }
+
+    #lyrics-content::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    #lyrics-content::-webkit-scrollbar-thumb {
+      background: #ff4ecd;
+      border-radius: 10px;
+    }
+
+    .secondary-btn {
+      background: transparent;
+      border: 1px solid #ff4ecd;
+      color: #ff4ecd;
+      margin-top: 20px;
+      padding: 8px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    .secondary-btn:hover {
+      background: #ff4ecd;
+      color: white;
+    }
+    a {
+      color: #ff4ecd; /* цвет текста */
+      text-decoration: none; /* убираем подчёркивание */
+      font-weight: bold; /* жирный текст */
+    }
+  </style>
+  <body>
+    <div class="background-blobs"></div>
+
+    <div class="glass-card" id="main-card">
+      <header>
+        <h1>Music<span>Lyrics</span></h1>
+        <p>Find your favorite song's soul</p>
+      </header>
+
+      <div class="input-group">
+        <input
+          type="text"
+          id="artist"
+          placeholder="Artist Name..."
+          autocomplete="off"
+        />
+        <input
+          type="text"
+          id="song"
+          placeholder="Song Title..."
+          autocomplete="off"
+        />
+        <button id="searchBtn">
+          <a href="second.html">Find Lyrics</a>
+        </button>
+      </div>
+
+      <div id="result-section" class="hidden">
+        <h2 id="display-title"></h2>
+        <div id="lyrics-content"></div>
+        <!-- <button class="secondary-btn">New Search</button> -->
+      </div>
+    </div>
+
+    <script>
+      const btn = document.getElementById("searchBtn");
+      const newBtn = document.querySelector(".secondary-btn");
+      const inp1 = document.getElementById("artist");
+      const inp2 = document.getElementById("song");
+      const result = document.getElementById("result-section");
+
+      async function addSong() {
+        let artist = inp1.value;
+        let song = inp2.value;
+        let URL =
+          "https://api.lyrics.ovh/v1/" +
+          encodeURIComponent(inp1.value) +
+          "/" +
+          encodeURIComponent(inp2.value);
+        const promise = await fetch(URL);
+        const data = await promise.json();
+        console.log(data);
+
+        if (data.error) {
+          alert("Lyric not found..");
+        } else {
+          localStorage.setItem("lyrics-display", data.lyrics);
+          localStorage.setItem("artist", artist);
+          localStorage.setItem("song", song);
+
+          window.location.href = "second.html";
+        }
+      }
+
+      btn.addEventListener("click", addSong);
+    </script>
+  </body>
+</html>
