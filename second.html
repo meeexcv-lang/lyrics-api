@@ -125,14 +125,22 @@
       <a href="index.html" class="back-link">← Back to Search</a>
     </div>
     <script>
-      let songTitle = document.querySelector(".song-name");
-      let lyricsContent = document.querySelector(".lyrics-text");
-      let artist = localStorage.getItem("artist");
-      let song = localStorage.getItem("song");
-      let lyrics = localStorage.getItem("lyrics-display");
-      console.log(artist);
-
       function addLyrics() {
+        let songTitle = document.querySelector(".song-name");
+        let lyricsContent = document.querySelector(".lyrics-text");
+        let song = localStorage.getItem("song");
+        let lyrics = localStorage.getItem("lyrics-display");
+        songTitle.textContent = song;
+        lyricsContent.textContent = lyrics;
+      }
+      addLyrics();
+    </script>
+    <script>
+      function addLyrics() {
+        let songTitle = document.querySelector(".song-name");
+        let lyricsContent = document.querySelector(".lyrics-text");
+        let song = localStorage.getItem("song");
+        let lyrics = localStorage.getItem("lyrics-display");
         songTitle.textContent = song;
         lyricsContent.textContent = lyrics;
       }
@@ -140,3 +148,4 @@
     </script>
   </body>
 </html>
+
