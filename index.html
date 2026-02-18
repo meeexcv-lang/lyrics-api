@@ -139,9 +139,9 @@
       color: white;
     }
     a {
-      color: #ff4ecd; /* цвет текста */
-      text-decoration: none; /* убираем подчёркивание */
-      font-weight: bold; /* жирный текст */
+      color: #ff4ecd;
+      text-decoration: none;
+      font-weight: bold;
     }
   </style>
   <body>
@@ -166,28 +166,16 @@
           placeholder="Song Title..."
           autocomplete="off"
         />
-        <button id="searchBtn">
-          <a href="second.html">Find Lyrics</a>
-        </button>
-      </div>
-
-      <div id="result-section" class="hidden">
-        <h2 id="display-title"></h2>
-        <div id="lyrics-content"></div>
-        <!-- <button class="secondary-btn">New Search</button> -->
+        <button id="searchBtn">Find Lyrics</button>
       </div>
     </div>
 
     <script>
       const btn = document.getElementById("searchBtn");
-      const newBtn = document.querySelector(".secondary-btn");
       const inp1 = document.getElementById("artist");
       const inp2 = document.getElementById("song");
-      const result = document.getElementById("result-section");
 
-      async function addSong() {
-        let artist = inp1.value;
-        let song = inp2.value;
+      btn.addEventListener("click", async function () {
         let URL =
           "https://api.lyrics.ovh/v1/" +
           encodeURIComponent(inp1.value) +
@@ -196,19 +184,16 @@
         const promise = await fetch(URL);
         const data = await promise.json();
         console.log(data);
-
         if (data.error) {
           alert("Lyric not found..");
         } else {
           localStorage.setItem("lyrics-display", data.lyrics);
-          localStorage.setItem("artist", artist);
-          localStorage.setItem("song", song);
+
+          localStorage.setItem("song", inp2.value);
 
           window.location.href = "second.html";
         }
-      }
-
-      btn.addEventListener("click", addSong);
+      });
     </script>
   </body>
 </html>
